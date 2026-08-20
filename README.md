@@ -50,16 +50,6 @@ cd desk-api/backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
-
-(Note: )SERIAL_PORT in main.py matches your Arduino's assigned port
-
-### 2. Run Backend
-Navigate to the backend directory, install dependencies, and start the FastAPI server:
-```bash
-cd desk-api/backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
 *(Note: Ensure `SERIAL_PORT` in `main.py` matches your Arduino's assigned port)*
 
 ### 3. Run Frontend
