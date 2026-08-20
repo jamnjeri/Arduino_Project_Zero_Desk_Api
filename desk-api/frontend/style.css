@@ -1,0 +1,655 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #f4f4f2;
+  --surface: #ffffff;
+  --surface-raised: #fafaf8;
+
+  --border: #e4e4e0;
+
+  --text-primary: #1c1c1b;
+  --text-secondary: #686864;
+  --text-muted: #9a9a94;
+
+  /* Primary dashboard accent */
+  --accent: #4f5fa8;
+  --accent-soft: rgba(79, 95, 168, 0.12);
+
+  /* Connection states */
+  --status-connecting: #c88a18;
+  --status-connected: #2f8a5b;
+  --status-disconnected: #c44747;
+
+  /* Button */
+  --button-surface: #555a63;
+  --button-surface-dark: #41454c;
+
+  --radius: 20px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -20%, #ffffff 0%, #f3f2ee 65%);
+  color: var(--text-primary);
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* ================================
+   Header
+================================ */
+
+header {
+  padding: 56px 20px 35px;
+}
+
+.header-content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.eyebrow,
+.sensor-type {
+  margin: 0 0 8px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.subtitle {
+  margin: 11px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* ================================
+   Connection
+================================ */
+
+#connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  /* margin-top: 14px; */
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  color: var(--status-connecting);
+
+  transition: color 200ms ease;
+}
+
+#connection-status.connecting {
+  color: var(--status-connecting);
+}
+
+#connection-status.connected {
+  color: var(--status-connected);
+}
+
+#connection-status.disconnected {
+  color: var(--status-disconnected);
+}
+
+/* ================================
+   Main
+================================ */
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 30px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* ================================
+   Cards
+================================ */
+
+.sensor-card {
+  position: relative;
+  min-height: 340px;
+  padding: 28px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(250, 249, 246, 0.92)
+  );
+
+  box-shadow:
+    0 10px 30px rgba(40, 38, 32, 0.055),
+    0 2px 5px rgba(40, 38, 32, 0.035);
+
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.sensor-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 40px rgba(40, 38, 32, 0.08),
+    0 3px 8px rgba(40, 38, 32, 0.04);
+}
+
+/* ================================
+   Card Header
+================================ */
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.sensor-badge {
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-family: monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+}
+
+/* ==================================================
+   POTENTIOMETER
+================================================== */
+
+.pot-card {
+  grid-row: span 2;
+  min-height: 700px;
+}
+
+.dial-container {
+  position: relative;
+  width: min(100%, 390px);
+  aspect-ratio: 1;
+  margin: 40px auto 0;
+  display: grid;
+  place-items: center;
+}
+
+.dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-135deg);
+}
+
+/* Dial background */
+
+.dial-track {
+  fill: none;
+  stroke: #e7e4dc;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 415 553;
+}
+
+.dial-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 415 553;
+  stroke-dashoffset: 415;
+  filter: drop-shadow(0 2px 4px rgba(184, 121, 24, 0.18));
+  transition: stroke-dashoffset 300ms ease;
+}
+
+.dial-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.dial-value #pot {
+  font-family: monospace;
+  font-size: clamp(3.2rem, 7vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: -0.08em;
+}
+
+.dial-range {
+  color: var(--text-muted);
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.dial-percent {
+  position: absolute;
+  bottom: 25%;
+  color: var(--text-secondary);
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+/* ==================================================
+   LIGHT SENSOR
+================================================== */
+
+.light-card {
+  min-height: 340px;
+}
+
+.light-visual {
+  position: relative;
+  height: 215px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.light-glow {
+  position: absolute;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(217, 164, 65, 0.42) 0%,
+    rgba(217, 164, 65, 0.18) 45%,
+    rgba(217, 164, 65, 0) 75%
+  );
+
+  filter: blur(18px);
+  opacity: 0.12;
+  transform: scale(0.7);
+  transition:
+    transform 400ms ease,
+    opacity 400ms ease;
+}
+
+.sun {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-35px);
+}
+
+.sun-core {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f4d98a, #d9a441);
+  box-shadow: 0 0 18px rgba(217, 164, 65, 0.25);
+  transition:
+    transform 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.ray {
+  position: absolute;
+  width: 2px;
+  height: 11px;
+  border-radius: 2px;
+  background: rgba(217, 164, 65, 0.35);
+  transition: opacity 300ms ease;
+}
+
+.ray-1 {
+  top: 0;
+}
+
+.ray-2 {
+  right: 0;
+  transform: rotate(90deg);
+}
+
+.ray-3 {
+  bottom: 0;
+}
+
+.ray-4 {
+  left: 0;
+  transform: rotate(90deg);
+}
+
+.ldr-reading {
+  position: absolute;
+  bottom: 3px;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: monospace;
+}
+
+.ldr-reading #ldr {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.ldr-reading span:last-child {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.light-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.light-footer strong {
+  color: var(--text-primary);
+  font-family: monospace;
+}
+
+/* ==================================================
+   BUTTON
+================================================== */
+
+.button-card {
+  min-height: 340px;
+}
+
+.physical-button-container {
+  height: 190px;
+  display: grid;
+  place-items: center;
+}
+
+.physical-button {
+  width: 115px;
+  height: 115px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #727781, #555a63);
+  box-shadow:
+    0 12px 22px rgba(40, 42, 46, 0.2),
+    inset 0 2px 3px rgba(255, 255, 255, 0.22),
+    inset 0 -4px 8px rgba(30, 32, 35, 0.22);
+
+  transition:
+    transform 90ms ease,
+    box-shadow 90ms ease;
+}
+
+.physical-button span {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e3e5e2, #aeb2ad 70%);
+  box-shadow: 0 4px 8px rgba(40, 42, 46, 0.22);
+}
+
+.button-card.pressed .physical-button {
+  transform: translateY(7px);
+  box-shadow:
+    0 5px 9px rgba(40, 42, 46, 0.25),
+    inset 0 2px 3px rgba(30, 32, 35, 0.28),
+    0 0 0 3px rgba(79, 95, 168, 0.12),
+    0 0 22px rgba(79, 95, 168, 0.18);
+}
+
+.button-card.pressed .physical-button span {
+  background: radial-gradient(circle at 35% 30%, #cfd3cf, #929791 75%);
+}
+
+.button-info {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.button-state {
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.button-description {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.button-raw {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-family: monospace;
+  font-size: 0.65rem;
+}
+
+.button-raw strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+/* ==================================================
+   TEMPERATURE & HUMIDITY
+================================================== */
+
+.visual-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 230px;
+  margin-top: 10px;
+}
+
+.sensor-reading {
+  margin-top: 15px;
+  font-family: monospace;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sensor-reading .unit {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-left: 4px;
+}
+
+/* Thermometer */
+.thermometer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.thermo-tube {
+  width: 16px;
+  height: 100px;
+  background: var(--border);
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: -6px;
+  z-index: 1;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.thermo-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0%; /* updated via JS */
+  background: var(--status-disconnected);
+  transition: height 400ms ease;
+}
+
+.thermo-bulb {
+  width: 40px;
+  height: 40px;
+  background: var(--status-disconnected);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 4px 8px rgba(196, 71, 71, 0.2);
+}
+
+/* Droplet */
+.droplet-container {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.droplet {
+  width: 100%;
+  height: 100%;
+  background: var(--border);
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.droplet-fill {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200%;
+  height: 0%;
+  background: var(--accent);
+  transform-origin: bottom center;
+  /* Anchor to the tip, un-rotate to make it horizontal, and scale to match the diagonal */
+  transform: translateX(50%) rotate(-45deg) scaleY(1.42);
+  transition: height 400ms ease;
+}
+
+/* ================================
+   Footer
+================================ */
+
+footer {
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  padding: 5px 20px 30px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: var(--text-muted);
+
+  font-family: monospace;
+
+  font-size: 0.62rem;
+
+  letter-spacing: 0.04em;
+}
+
+footer a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+footer a:hover {
+  color: var(--text-secondary);
+}
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 700px) {
+  .header-content {
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .pot-card {
+    grid-row: auto;
+
+    min-height: 550px;
+  }
+
+  .dial-container {
+    max-width: 330px;
+  }
+}
+
+@media (max-width: 450px) {
+  header {
+    padding: 35px 16px 25px;
+  }
+
+  main {
+    padding: 0 16px 25px;
+  }
+
+  .sensor-card {
+    min-height: 310px;
+
+    padding: 22px;
+  }
+
+  .pot-card {
+    min-height: 400px;
+  }
+
+  .dial-container {
+    max-width: 285px;
+  }
+
+  footer {
+    padding: 5px 16px 25px;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+}

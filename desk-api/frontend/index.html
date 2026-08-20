@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Desk API</title>
+
+        <!-- Css -->
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    
+    <body>
+        <header>
+            <div class="header-content">
+                <div>
+                    <p class="eyebrow">EMBEDDED TELEMETRY</p>
+                    <h1>Desk API</h1>
+                    <p class="subtitle">Arduino telemetry dashboard</p>
+                    </div>
+                    <div style="display: flex; gap: 15px; align-items: center">
+                    <button id="demo-btn" class="sensor-badge" style="cursor: pointer; background: var(--surface)">
+                        DEMO MODE: OFF
+                    </button>
+                    <div id="connection-status">● CONNECTING...</div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Potentiometer -->
+            <section class="sensor-card pot-card">
+                <div class="card-header">
+                    <div>
+                        <p class="sensor-type">ANALOG INPUT · A0</p>
+                        <h2>Potentiometer</h2>
+                    </div>
+
+                    <span class="sensor-badge">ROTARY</span>
+                </div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 220 220">
+                        <circle class="dial-track" cx="110" cy="110" r="88"></circle>
+                        <circle
+                        id="pot-dial"
+                        class="dial-progress"
+                        cx="110"
+                        cy="110"
+                        r="88"
+                        ></circle>
+                    </svg>
+                    <div class="dial-value">
+                        <span id="pot">--</span>
+
+                        <span class="range"> / 1023 </span>
+                    </div>
+                    <div class="dial-percent"><span id="pot-percent">--</span>%</div>
+                </div>
+
+                <!-- Existing gauge remains -->
+                <div class="gauge">
+                    <div id="pot-bar" class="gauge-fill"></div>
+                </div>
+            </section>
+
+            <!-- Button -->
+
+            <section id="button-card" class="sensor-card button-card">
+                <div class="card-header">
+                    <div>
+                        <p class="sensor-type">DIGITAL INPUT · D2</p>
+                        <h2>Button</h2>
+                    </div>
+                    <span class="sensor-badge">DIGITAL</span>
+                </div>
+                <div class="physical-button-container">
+                    <div id="physical-button" class="physical-button">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="button-info">
+                    <div>
+                        <div id="button-state" class="button-state">--</div>
+                        <div class="button-description">Push input</div>
+                    </div>
+
+                    <div class="button-raw">
+                        <span>VALUE</span>
+                        <strong id="button"> -- </strong>
+                    </div>
+                </div>
+                <!-- Existing visual state hook -->
+                <div id="button-indicator" class="button-indicator"></div>
+            </section>
+
+            <!-- LDR -->
+            <section class="sensor-card light-card">
+                <div class="card-header">
+                    <div>
+                        <p class="sensor-type">ANALOG INPUT · A1</p>
+                        <h2>Light Sensor</h2>
+                    </div>
+                    <span class="sensor-badge">LDR</span>
+                </div>
+                <div class="light-visual">
+                    <div id="light-glow" class="light-glow"></div>
+                    <div class="sun">
+                        <div class="sun-core"></div>
+
+                        <div class="ray ray-1"></div>
+                        <div class="ray ray-2"></div>
+                        <div class="ray ray-3"></div>
+                        <div class="ray ray-4"></div>
+                    </div>
+                    <div class="ldr-reading">
+                        <span id="ldr">--</span>
+                        <span class="range"> / 1023 </span>
+                    </div>
+                </div>
+                <div class="light-footer">
+                    <span id="ldr-status">--</span>
+                    <strong> <span id="ldr-percent">--</span>% </strong>
+                </div>
+                <!-- Gauge remains -->
+                <div class="gauge">
+                    <div id="ldr-bar" class="gauge-fill"></div>
+                </div>
+            </section>
+
+            <!-- Temperature -->
+            <section class="sensor-card temp-card">
+                <div class="card-header">
+                    <div>
+                        <p class="sensor-type">I2C SENSOR · A4/A5</p>
+                        <h2>Temperature</h2>
+                    </div>
+                    <span class="sensor-badge">AHT10</span>
+                </div>
+                <div class="visual-container">
+                    <div class="thermometer">
+                        <div class="thermo-tube">
+                            <div id="thermo-fill" class="thermo-fill"></div>
+                        </div>
+                        <div class="thermo-bulb"></div>
+                    </div>
+                    <div class="sensor-reading">
+                        <span id="temperature">--</span><span class="unit">°C</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Humidity -->
+            <section class="sensor-card humidity-card">
+                <div class="card-header">
+                    <div>
+                        <p class="sensor-type">I2C SENSOR · A4/A5</p>
+                        <h2>Humidity</h2>
+                    </div>
+                    <span class="sensor-badge">AHT10</span>
+                </div>
+                <div class="visual-container">
+                    <div class="droplet-container">
+                        <div class="droplet">
+                            <div id="droplet-fill" class="droplet-fill"></div>
+                        </div>
+                    </div>
+                    <div class="sensor-reading">
+                        <span id="humidity">--</span><span class="unit">%</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <span>Desk API</span>
+            <span> Arduino Uno · USB Serial · WebSocket </span>
+            <span>
+                Built by
+                <a
+                href="https://github.com/jamnjeri"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                @jamnjeri
+                </a>
+            </span>
+        </footer>
+        
+        <script>
+            const connectionStatus = document.getElementById("connection-status");
+            const demoBtn = document.getElementById("demo-btn");
+            
+            let ws;
+            let demoInterval = null;
+            let isDemoMode = false;
+
+            // Current fake values
+            let mockData = { pot: 500, button: 1, ldr: 800, temperature: 22.0, humidity: 45.0 };
+
+            function updateDashboard(data) {
+                // Potentiometer
+                document.getElementById("pot").textContent = Math.round(data.pot);
+                const percentage = (data.pot / 1023) * 100;
+                document.getElementById("pot-bar").style.width = `${percentage}%`;
+                const dialProgress = 415;
+                document.getElementById("pot-dial").style.strokeDashoffset = dialProgress - (dialProgress * percentage / 100);
+                document.getElementById("pot-percent").textContent = percentage.toFixed(1);
+
+                // Button
+                document.getElementById("button").textContent = data.button;
+                const buttonCard = document.getElementById("button-card");
+                const buttonIndicator = document.getElementById("button-indicator");
+                const physicalButton = document.getElementById("physical-button");
+                
+                if (data.button === 0) {
+                    document.getElementById("button-state").textContent = "PRESSED";
+                    buttonCard.classList.add("pressed");
+                    buttonIndicator.classList.add("active");
+                    physicalButton.classList.add("active");
+                } else {
+                    document.getElementById("button-state").textContent = "RELEASED";
+                    buttonCard.classList.remove("pressed");
+                    buttonIndicator.classList.remove("active");
+                    physicalButton.classList.remove("active");
+                }
+
+                // LDR
+                document.getElementById("ldr").textContent = Math.round(data.ldr);
+                const brightnessPercent = ((1023 - data.ldr) / 1023) * 100;
+                const glow = 0.05 + (brightnessPercent / 100) * 0.95;
+                const glowScale = 0.65 + (brightnessPercent / 100) * 2.2;
+                document.getElementById("light-glow").style.opacity = glow;
+                document.getElementById("light-glow").style.transform = `scale(${glowScale})`;
+                
+                document.querySelector(".sun-core").style.opacity = 0.75 + (brightnessPercent / 100) * 0.35;
+                document.querySelectorAll(".ray").forEach(ray => {
+                    ray.style.opacity = 0.15 + (brightnessPercent / 100) * 0.85;
+                });
+                
+                document.getElementById("ldr-bar").style.width = `${brightnessPercent}%`;
+                document.getElementById("ldr-percent").textContent = brightnessPercent.toFixed(1);
+                document.getElementById("ldr-status").textContent = brightnessPercent >= 70 ? "Bright" : (brightnessPercent >= 30 ? "Moderate" : "Dark");
+
+                // Temperature & Humidity
+                document.getElementById("temperature").textContent = data.temperature.toFixed(1);
+                const tempPercent = Math.min(Math.max(((data.temperature - 10) / 30) * 100, 0), 100);
+                document.getElementById("thermo-fill").style.height = `${tempPercent}%`;
+
+                document.getElementById("humidity").textContent = data.humidity.toFixed(1);
+                document.getElementById("droplet-fill").style.height = `${data.humidity}%`;
+            }
+
+            // Demo Mode Logic
+            demoBtn.addEventListener("click", () => {
+                isDemoMode = !isDemoMode;
+                if (isDemoMode) {
+                    demoBtn.textContent = "DEMO MODE: ON";
+                    demoBtn.style.background = "var(--accent-soft)";
+                    demoBtn.style.color = "var(--accent)";
+                    
+                    // Disconnect real WS if active
+                    if(ws) ws.close();
+                    connectionStatus.textContent = "● MOCK DATA";
+                    connectionStatus.className = "connected";
+
+                    // Generate fluctuating data every 800ms
+                    demoInterval = setInterval(() => {
+                        mockData.pot = Math.max(0, Math.min(1023, mockData.pot + (Math.random() * 100 - 50)));
+                        mockData.ldr = Math.max(0, Math.min(1023, mockData.ldr + (Math.random() * 100 - 50)));
+                        mockData.temperature = Math.max(15, Math.min(35, mockData.temperature + (Math.random() * 2 - 1)));
+                        mockData.humidity = Math.max(30, Math.min(80, mockData.humidity + (Math.random() * 4 - 2)));
+                        mockData.button = Math.random() > 0.8 ? 0 : 1; // Random presses
+                        
+                        updateDashboard(mockData);
+                    }, 800);
+                } else {
+                    demoBtn.textContent = "DEMO MODE: OFF";
+                    demoBtn.style.background = "var(--surface)";
+                    demoBtn.style.color = "inherit";
+                    clearInterval(demoInterval);
+                    connectWebSocket(); // Try reconnecting
+                }
+            });
+
+            // Real WebSocket Logic
+            function connectWebSocket() {
+                if (isDemoMode) return;
+                
+                connectionStatus.textContent = "● CONNECTING...";
+                connectionStatus.className = "connecting";
+
+                ws = new WebSocket("ws://127.0.0.1:8000/ws");
+
+                ws.onopen = () => {
+                    connectionStatus.textContent = "● CONNECTED";
+                    connectionStatus.className = "connected";
+                };
+
+                ws.onmessage = (event) => {
+                    updateDashboard(JSON.parse(event.data));
+                };
+
+                ws.onclose = () => {
+                    if(isDemoMode) return;
+                    connectionStatus.textContent = "● DISCONNECTED";
+                    connectionStatus.className = "disconnected";
+                    setTimeout(connectWebSocket, 2000);
+                };
+            }
+
+            connectWebSocket();
+        </script>
+    </body>
+</html>
