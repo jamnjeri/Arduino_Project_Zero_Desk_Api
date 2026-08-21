@@ -11,10 +11,10 @@ A hardware-to-web telemetry system built to stream real-time sensor data from an
 **Real-Time Hardware to Web Sync**
 ![Desk API Demo](./desk-api/assets/demo.gif)
 
-**The Dashboard Interface & Hardware Setup**
+<!-- **The Dashboard Interface & Hardware Setup**
 | Active Telemetry Dashboard | Breadboard Circuit |
 | :---: | :---: |
-| <img src="./desk-api/assets/dashboard.png" width="800"> | <img src="./desk-api/assets/hardware-rotated.jpeg" width="800"> |
+| <img src="./desk-api/assets/dashboard.png" width="800"> | <img src="./desk-api/assets/hardware-rotated.jpeg" width="800"> | -->
 
 *(Note: The dashboard also features a complete "Mock Data" mode, allowing you to test the UI without an active serial connection).*
 
