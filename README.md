@@ -2,23 +2,21 @@
 
 A hardware-to-web telemetry system built to stream real-time sensor data from an Arduino to a browser dashboard.
 
-**[View the Live Demo Dashboard](#)** *(Note: Features a mock data mode for exploring without hardware)*
+**[View the Live Demo Dashboard](https://jamnjeri.github.io/Arduino_Project_Zero_Desk_Api/)** *(Note: Features a mock data mode for exploring without hardware)*
 
 ---
 
 ## 📸 Project Visuals
 
-<!-- Uncomment and add your paths when media is ready -->
-<!-- <video src="./path/to/demo-video.mp4" autoplay loop muted playsinline width="100%"></video> -->
+**Real-Time Hardware to Web Sync**
+![Desk API Demo](./desk-api/assets/demo.gif)
 
-<!-- 
-<div align="center">
-  <img src="./path/to/circuit.jpg" alt="Physical Circuit Setup" width="48%" />
-  <img src="./path/to/dashboard.png" alt="Dashboard UI" width="48%" />
-</div> 
--->
+**The Dashboard Interface & Hardware Setup**
+| Active Telemetry Dashboard | Breadboard Circuit |
+| :---: | :---: |
+| <img src="./desk-api/assets/dashboard.png" width="800"> | <img src="./desk-api/assets/hardware-rotated.jpeg" width="800"> |
 
----
+*(Note: The dashboard also features a complete "Mock Data" mode, allowing you to test the UI without an active serial connection).*
 
 ## 🏗️ How It Works
 
